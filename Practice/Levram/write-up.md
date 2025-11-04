@@ -1,5 +1,7 @@
 # Levram: Offsec Practice's Walkthrough
 
+![DeepSeek Generated Image](https://github.com/het-desai/Offsec-CTF/blob/main/Practice/Levram/screenshots/deepseekimg.jpg "DeepSeek Generated Image")
+
 ## Introduction
 
 Levram is an Offsec Practice machine that tests your ability to move from simple service discovery to full system compromise by chaining a webapp vulnerability with local privilege escalation. In this write-up I enumerate the target with Nmap, interact with the web service running on port 8000 (Gerapy), and gain initial access using an authenticated RCE exploit (CVE-2021-43857) after discovering default credentials. From the resulting shell I stabilize access, run automated and manual enumeration, and escalate to root using two different methods: abusing python3.10 capabilities (cap_setuid=ep) and discovering a clear-text root password in a systemd service file. The walkthrough documents the commands, thought process, and small gotchas (e.g., creating a project so the exploit works), so you can reproduce the steps.
