@@ -1,6 +1,6 @@
 # Levram: Offsec Practice's Walkthrough
 
-![DeepSeek Generated Image](https://github.com/het-desai/Offsec-CTF/blob/main/Practice/Levram/screenshots/deepseekimg.jpg "DeepSeek Generated Image")
+![DeepAI Generated Image](https://github.com/het-desai/Offsec-CTF/blob/main/Practice/Levram/screenshots/deepai.jpg "DeepAI Generated Image")
 
 ## Introduction
 
@@ -50,7 +50,7 @@ PORT     STATE SERVICE
 Nmap done: 1 IP address (1 host up) scanned in 18.50 seconds
 ```
 
-I tried the default credentials `admin:admin and it worked.
+I tried the default credentials `admin:admin` and it worked.
 
 ## Initial Access
 
