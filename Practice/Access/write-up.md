@@ -434,7 +434,7 @@ Version: v1.0.3 (9dad6e1) - 11/29/25 - Ronnie Flathers @ropnop
 
 `ffuf` directory brute-forcing revealed an uploads directory. At the home page of port 80, there is a ticket buying page let us to upload a file which can accessible through uploads directory.
 
-![image](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image.png 'Ticket Buying form')
+![image]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image.png 'Ticket Buying form')
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Access]
@@ -474,9 +474,9 @@ server-status           [Status: 403, Size: 423, Words: 37, Lines: 12, Duration:
 
 Tried to upload reverse shell on upload page but could not able to upload a `.php` file. Manipulating file extension’s didn’t allow to upload a reverse shell. Below screenshot looks like giving filename two time works but on the uploads directory it save’s file name with the last name given.
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image1.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image1.png)
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image2.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image2.png)
 
 Tried to upload other file types with the mindset of NTLM theft. but didn’t receive any NTLM hash in my responder terminal.
 
@@ -524,11 +524,11 @@ Generation Complete.
 
 After few iteration with file extension tweak and prepend the magic byte. The one way successfully uploaded a reverse shell on the web page as mentioned below.
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image3.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image3.png)
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image4.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image4.png)
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image5.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image5.png)
 
 ## Initial Foothold
 
@@ -536,9 +536,9 @@ After few iteration with file extension tweak and prepend the magic byte. The on
 
 Generate a base64 encoded reverse shell command through [www.revshells.com](https://www.revshell.com) and start `nc` listener.
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image6.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image6.png)
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image7.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image7.png)
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Access]
@@ -582,11 +582,11 @@ Usage: http://target.com/simple-backdoor.php?cmd=cat+/etc/passwd
 
 Upload both (.htaccess, revshell.evil) the files using Ticket.php function on web application.
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image.png)
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image8.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image8.png)
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image9.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image9.png)
 
 Follow the same way as mentioned in Unintended way to get a reverse shell on the system.
 
@@ -608,7 +608,7 @@ M: was deleted successfully.
 
 `SharpHound.ps1` generated “access offsec_202512020722525_BloodHound.zip” file into the our kali machine and see the data through Bloodhound and PlumHound. The PlumHound gives output that `svc_mssql` user’s can kerberoastable.
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image10.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image10.png)
 
 Upload a `Rubeus.exe` in the victim’s system for kerberoast the `svc_mssql` hash. Cracked that hash against the `rockyou.txt` wordlist and quickly got one password matched.
 
@@ -749,21 +749,19 @@ SeManageVolumePrivilege       Perform volume maintenance tasks Disabled
 SeIncreaseWorkingSetPrivilege Increase a process working set   Disabled
 ```
 
-![image.png](https://raw.githubusercontent.com/het-desai/offsec/practice/main/access/screenshots/image11.png)
+![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image11.png)
 
-[https://github.com/CsEnox/SeManageVolumeExploit](https://github.com/CsEnox/SeManageVolumeExploit)
+[Exploit Repository: SeManageVolumeExploit](https://github.com/CsEnox/SeManageVolumeExploit)
 
-https://github.com/CsEnox/SeManageVolumeExploit/releases/tag/public
+[Exploit Release file](https://github.com/CsEnox/SeManageVolumeExploit/releases/tag/public)
 
-https://www.youtube.com/watch?v=gVLoHAl-8Z0
+[Reference 1](https://www.youtube.com/watch?v=gVLoHAl-8Z0)
 
-[https://github.com/CsEnox/SeManageVolumeExploit/releases/tag/public](https://github.com/CsEnox/SeManageVolumeExploit/releases/tag/public)
+[Reference 2](https://sirensecurity.io/blog/windows-privilege-escalation-resources/)
 
-https://sirensecurity.io/blog/windows-privilege-escalation-resources/
+[Reference 3](https://decoder.cloud/2023/02/16/eop-via-arbitrary-file-write-overwite-in-group-policy-client-gpsvc-cve-2022-37955/)
 
-https://decoder.cloud/2023/02/16/eop-via-arbitrary-file-write-overwite-in-group-policy-client-gpsvc-cve-2022-37955/
-
-https://oscp.adot8.com/windows-privilege-escalation/whoami-priv/semanagevolumeprivilege
+[Reference 4](https://oscp.adot8.com/windows-privilege-escalation/whoami-priv/semanagevolumeprivilege)
 
 After visiting few articles and github repository found a ready to execute exploit which I transferred into the victim’s system and execute it. 
 
