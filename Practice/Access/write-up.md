@@ -1,5 +1,7 @@
 # Offsec Practice: Access CTF Walkthrough
 
+![LeonardoAi Generated Image](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/leonardoai.jpg 'LeonardoAi Generated Image')
+
 ## Introduction
 
 This challenge involved a Windows Active Directory environment combined with a vulnerable web application. The machine required chaining web exploitation with Active Directory attacks such as Kerberoasting and abusing misconfigured privileges to achieve full domain compromise.
