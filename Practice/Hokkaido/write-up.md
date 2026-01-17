@@ -1,4 +1,4 @@
-# Report
+# Offsec Practice: Hokkaido CTF Walkthrough
 
 ![Leonardo AI](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Hokkaido/screenshots/leonardoai.jpg)
 
